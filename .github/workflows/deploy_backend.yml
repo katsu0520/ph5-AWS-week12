@@ -9,6 +9,9 @@ env:
   SERVICE_NAME: ph5aws
   ROLE_TO_ASSUME: arn:aws:iam::149536478657:role/GitHubActions
 
+  ECS_CLUSTER: ph5aws-katsuyoshi
+  ECS_SERVICE: ph5aws-service-nwbihzdi
+
 jobs:
   deploy:
     name: Deploy
@@ -89,8 +92,8 @@ jobs:
         uses: aws-actions/amazon-ecs-deploy-task-definition@v1
         with:
           task-definition: ${{ steps.task-def-app.outputs.task-definition }}
-          service: ${{ env.SERVICE_NAME }}
-          cluster: ${{ env.SERVICE_NAME }}
+          service: ${{ env.ECS_SERVICE }}
+          cluster: ${{ env.ECS_CLUSTER }}
           wait-for-service-stability: true
 
 
