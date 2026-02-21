@@ -70,7 +70,9 @@ jobs:
           | jq "del(.requiresAttributes)" \
           | jq "del(.revision)" \
           | jq "del(.status)" \
-          | jq "del(.enableFaultInjection)" > ./task_definition.json
+          | jq "del(.enableFaultInjection)" \
+          | jq ".containerDefinitions |= map(if .name==\"${{ env.SERVICE_NAME }}-phpfpm\" then .environment|=((.//[]|map(select(.name!=\"LOG_CHANNEL\")))+[{\"name\":\"LOG_CHANNEL\",\"value\":\"stderr\"}]) else . end)" \
+          > ./task_definition.json
 
       - name: Fill in the new image ID Web
         id: task-def-web
